@@ -223,6 +223,27 @@ p { margin: 0 0 1.15em; }
   color: var(--ink-mute);
   margin: 0.3rem 0 0;
 }
+/* Spam honeypots. Gravity Forms and Akismet ship decoy fields that the source
+   hides with its own CSS; that CSS is gone, so they rendered — a stray "Δ"
+   textarea and two "This field is for validation purposes and should be left
+   unchanged" inputs sat visibly at the end of both patient forms. They are moved
+   off-screen rather than deleted, which is how the source behaved and keeps the
+   content parity the rebuild is measured on. Not display:none — a bot that reads
+   CSS treats that as a tell.
+   The decoy's sentence is a bare text node inside the <li>, not inside the label,
+   so the CONTAINER has to move — hiding the input alone leaves the sentence.
+   Both decoys duplicate a field that genuinely exists on the same form
+   (registration: a second "Email" beside input_5; contact: a second "Phone"
+   beside input_10), which is how they were identified. */
+.pform li:has(> input[id="input_12_93"]),
+.pform li:has(> input[id="input_10_12"]),
+.pform p:has(textarea[name="ak_hp_textarea"]) {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden;
+}
 .pform input:focus-visible, .pform select:focus-visible, .pform textarea:focus-visible { border-color: var(--focus); }
 .pform button[type="submit"] { margin-top: 1.4rem; }
 
