@@ -19,7 +19,10 @@
 
   // reveal on scroll — marked up here rather than in the HTML so a page with no
   // JavaScript never ships elements that start invisible.
-  var targets = document.querySelectorAll('.card, .facts, .rail, .prose > h2, .hero .lede');
+  // .rail is NAVIGATION and it is sticky. Starting it at opacity 0 and waiting
+  // for an observer means a blank column whenever that observer is late or does
+  // not fire. Reveal decoration, never wayfinding.
+  var targets = document.querySelectorAll('.card, .facts, .prose > h2, .hero .lede');
   if (reduced || !('IntersectionObserver' in window)) {
     // nothing to do: without the attribute the elements were never hidden
   } else {
