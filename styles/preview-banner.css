@@ -3,3 +3,6 @@
 [data-preview-banner] strong{font-weight:700}
 [data-preview-banner] a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 @media (max-width:640px){[data-preview-banner]{font-size:0.75rem;text-align:left}}
+[data-preview-formnotice]{border:2px solid #e51d1d;background:#fff5f5;color:#16151a;padding:1rem 1.15rem;border-radius:8px;margin:0 0 1.6rem;font:400 0.9375rem/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+[data-preview-formnotice] strong{display:block;margin-bottom:0.25rem;font-weight:700}
+[data-preview-formnotice] a{color:#8d0f0f}
