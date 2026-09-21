@@ -1,0 +1,148 @@
+/* tokens.css — derived by sr-tokens.mjs from computed (browser capture).
+   Every value below traces to audit/design-baseline.json. Change values HERE,
+   never at a call site: one source, or the system is not a system. */
+:root {
+  /* --- colour ------------------------------------------------------ */
+  --c-1: #000000;
+  --c-2: #ffffff;
+  --c-3: #60606003;
+  --c-4: #0f1918;
+  --c-5: #6b6b6b;
+  --c-6: #464451;
+  --c-7: #757575;
+  --c-8: #e51d1d;
+  --c-9: #fcfcfc;
+
+  /* --- type -------------------------------------------------------- */
+  --font-body: Lato;
+  --font-display: Arial;
+  --fs-1: 11px;
+  --fs-2: 13px;
+  --fs-3: 13.3333px;
+  --fs-4: 14px;
+  --fs-5: 15px;
+  --fs-6: 16px;
+  --fs-7: 17.6px;
+  --fs-8: 18px;
+  --fs-9: 20px;
+  --fs-10: 22px;
+  --fs-11: 26.25px;
+  --fs-12: 28px;
+  --fs-13: 30px;
+  --fs-14: 32px;
+  --fs-15: 34px;
+  --fs-16: 36px;
+  --fs-17: 60px;
+  --fs-18: 75px;
+
+  /* --- space ------------------------------------------------------- */
+  --sp-1: 5px;
+  --sp-2: 6.66667px;
+  --sp-3: 7px;
+  --sp-4: 8px;
+  --sp-5: 10px;
+  --sp-6: 12px;
+  --sp-7: 13.6px;
+  --sp-8: 15px;
+  --sp-9: 16px;
+  --sp-10: 20px;
+  --sp-11: 25px;
+  --sp-12: 30px;
+  --sp-13: 32px;
+  --sp-14: 40px;
+  --sp-15: 50px;
+  --sp-16: 70px;
+  --sp-17: 80px;
+  --sp-18: 85px;
+  --sp-19: 100px;
+  --sp-20: 150px;
+
+  /* --- shape ------------------------------------------------------- */
+  --radius-1: 10px;
+  --radius-2: 5px;
+  --radius-3: 20px;
+  --radius-4: 100px;
+  --shadow-1: rgb(0, 0, 0) 0px 0px 30px 0px;
+  --shadow-2: rgb(0, 0, 0) 0px 0px 10px 0px;
+  --shadow-3: rgb(193, 104, 93) 0px 0px 10px 0px;
+
+  /* --- layout ------------------------------------------------------ */
+  --container: 100%;
+  --bp-1: 1px;
+  --bp-2: 321px;
+  --bp-3: 480px;
+  --bp-4: 600px;
+  --bp-5: 640px;
+  --bp-6: 641px;
+  --bp-7: 700px;
+  --bp-8: 761px;
+  --bp-9: 768px;
+  --bp-10: 769px;
+  --bp-11: 790px;
+  --bp-12: 800px;
+  --bp-13: 900px;
+  --bp-14: 992px;
+  --bp-15: 993px;
+  --bp-16: 1024px;
+  --bp-17: 1100px;
+  --bp-18: 1200px;
+  --bp-19: 1201px;
+}
+
+/* === reforge design layer === */
+/* Minimalist editorial + glass. Brand values trace to the computed baseline
+   above: --c-6 is the measured body ink, --c-8 the measured brand red, --c-4 the
+   measured dark ground. Everything else is the redesign's own surface system. */
+:root {
+  --ink:        #16151a;
+  --ink-body:   var(--c-6);
+  --ink-mute:   var(--c-7);
+  --accent:     var(--c-8);
+  --accent-ink: #8d0f0f;
+  --deep:       var(--c-4);
+  --deep-2:     #14211f;
+  --paper:      #fbfaf8;
+  --paper-2:    #f2efe9;
+  --line:       #e3ded4;
+  --line-soft:  #ece7de;
+  --white:      var(--c-2);
+
+  /* glass — light surfaces sit over imagery and paper, dark over --deep */
+  --glass:        rgba(255, 255, 255, 0.58);
+  --glass-brd:    rgba(255, 255, 255, 0.72);
+  --glass-shadow: 0 1px 2px rgba(22, 21, 26, 0.04), 0 12px 32px -12px rgba(22, 21, 26, 0.18);
+  --glass-dark:     rgba(255, 255, 255, 0.07);
+  --glass-dark-brd: rgba(255, 255, 255, 0.16);
+  --blur: saturate(160%) blur(18px);
+
+  --on-deep:      rgba(255, 255, 255, 0.94);
+  --on-deep-mute: rgba(255, 255, 255, 0.66);
+  --focus:        #1f6feb;
+
+  /* type — Lato is the measured brand face; Fraunces is the editorial voice */
+  --sans: 'Lato', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --fs-display: clamp(2.6rem, 1.3rem + 5.2vw, 5.25rem);
+  --fs-h1:  clamp(2.1rem, 1.35rem + 3.1vw, 3.75rem);
+  --fs-h2:  clamp(1.6rem, 1.2rem + 1.7vw, 2.5rem);
+  --fs-h3:  clamp(1.18rem, 1.05rem + 0.55vw, 1.5rem);
+  --fs-lede: clamp(1.08rem, 1rem + 0.45vw, 1.35rem);
+  --fs-body: 1.0625rem;
+  --fs-small: 0.875rem;
+  --fs-kicker: 0.75rem;
+  --lh-tight: 1.06;
+  --lh-body: 1.72;
+  --measure: 68ch;
+
+  /* space + shape */
+  --shell: 1180px;
+  --gutter: clamp(1.15rem, 4vw, 3rem);
+  --band: clamp(3.5rem, 7vw, 7rem);
+  --r-sm: 6px;
+  --r: 14px;
+  --r-lg: 22px;
+  --r-pill: 100px;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur: 480ms;
+}

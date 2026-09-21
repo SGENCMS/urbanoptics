@@ -1,0 +1,5 @@
+/* preview-banner.css — present ONLY in the public preview, never in the handoff build. */
+[data-preview-banner]{position:relative;z-index:200;background:#16151a;color:rgba(255,255,255,.94);font:400 0.8125rem/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;text-align:center;padding:0.6rem 1rem;letter-spacing:0.01em}
+[data-preview-banner] strong{font-weight:700}
+[data-preview-banner] a{color:#fff;text-decoration:underline;text-underline-offset:2px}
+@media (max-width:640px){[data-preview-banner]{font-size:0.75rem;text-align:left}}

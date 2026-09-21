@@ -1,0 +1,19 @@
+{
+  "schema": "site-reforge-local/preview-provenance@1",
+  "note": "This tree is the handoff build in dist/ PLUS the hardening below. It is not the deliverable.",
+  "previewUrl": "https://sgencms.github.io/urbanoptics",
+  "realSite": "https://www.urbanopticsok.com",
+  "changes": {
+    "pages": 210,
+    "robotsMeta": 210,
+    "referrerMeta": 210,
+    "titlePrefixed": 210,
+    "ogRewritten": 210,
+    "ogImageRemoved": 1,
+    "jsonLdRemoved": 210,
+    "formsNeutralised": 425,
+    "bannersAdded": 210,
+    "sitemap.xmlRemoved": true,
+    "llms.txtRemoved": true
+  }
+}
