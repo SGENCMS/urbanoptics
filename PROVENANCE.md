@@ -63,6 +63,7 @@ on the patient intake form mandatory), and 206 pages carried multiple `<h1>`s.
 | --- | --- |
 | `<link rel="canonical">` → the client's own URL, on every page | Correct for a duplicate, and deliberately different from `og:url`, which drives unfurl cards |
 | The 39 dead internal links | They are the source's own link rot. 3 point at URLs the live site itself returns 404 for; 36 at pages that never existed on it. Repointing them would invent destinations the client never had. |
+| The EyeCarePro attribution on `/disclaimer/` | The client's own legal copy, preserved verbatim. It credits the previous web vendor with having created the graphical template — which is **not** true of this redesign. Flagged to the client in the handoff `CHANGE-LOG.md` and `DEPLOY.md` rather than silently rewritten: it is their legal text, not ours. It is the only occurrence in the build. |
 | Outbound links to `booking.adit.com` and `yourstore.wewillship.com` | The practice's real booking and contact-lens services. Navigation is not blocked; `no-referrer` covers the leak. |
 | `site.css`, `tokens.css`, `motion.css` | Byte-identical to the handoff build. The banner's styles live in a separate `preview-banner.css` so the deliverable's stylesheets are not touched. |
 
