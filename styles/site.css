@@ -248,6 +248,97 @@ p { margin: 0 0 1.15em; }
 .prose-mark { margin: 2.2rem 0 0.6rem; max-width: none; }
 .prose-mark img { height: 10px; width: auto; opacity: 0.55; }
 
+/* ── the connect strip ────────────────────────────────────────────────────
+   The home page's prose OPENED with the source site's own header markup: a Yelp
+   badge, four bare underlined links, the boxed logo, a second "Request an
+   Appointment" and the tagline repeated in grey directly under a hero that
+   already states it. prose-grids.mjs keeps every one of those - all six links,
+   both images, the tagline - and arranges them here instead of leaving them
+   stacked down the left as leaked source. The four social and review
+   destinations appear NOWHERE else in the build, footer included.
+
+   Hover states use the palette's own tokens rather than each network's brand
+   hex. That keeps the strip inside the design system and keeps C13 honest:
+   every colour here resolves to a token. */
+.connect {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(1.4rem, 4vw, 3rem);
+  align-items: center;
+  margin: 0 0 clamp(2.2rem, 5vw, 3.4rem);
+  padding: clamp(1.3rem, 3vw, 1.9rem) clamp(1.3rem, 3vw, 2.1rem);
+  border: 1px solid var(--glass-brd);
+  border-radius: var(--r-lg);
+  background: var(--glass);
+  backdrop-filter: blur(var(--blur)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(1.4);
+  box-shadow: var(--shadow-1);
+}
+.c-brand { display: flex; align-items: center; gap: clamp(1rem, 2.5vw, 1.6rem); }
+.c-brand > a { flex: 0 0 auto; display: block; }
+/* The black box is part of the logo BITMAP, not a border that can be turned off.
+   A clip-path inset was tried and left the vertical rules showing — the element
+   is scaled, so the percentage that clears a 5px frame is not eyeballable.
+   unbox-logo.mjs measures and crops the file instead; nothing to trim here. */
+.c-logo {
+  width: auto; height: clamp(52px, 7vw, 72px);
+  margin: 0; max-width: none;
+}
+.c-tag {
+  margin: 0; max-width: none;
+  font: 700 var(--fs-kicker)/1.5 var(--sans);
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute);
+}
+.c-side { display: flex; flex-direction: column; align-items: flex-end; gap: 0.7rem; }
+/* icons and the appointment button share a row: stacked, they left the card
+   half-empty below them */
+.c-row { display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap; justify-content: flex-end; }
+.c-label {
+  margin: 0; max-width: none;
+  font: 700 var(--fs-kicker)/1 var(--sans);
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-mute);
+}
+.c-links {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+}
+.c-links li { margin: 0; }
+.c-ico {
+  display: grid; place-items: center;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--paper); border: 1px solid var(--line);
+  color: var(--ink); text-decoration: none;
+  transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease),
+              color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.c-ico svg { width: 18px; height: 18px; fill: currentColor; }
+/* an outline-drawn icon must keep fill:none — the rule above is a declaration
+   and would otherwise beat the inline fill attribute, filling it solid */
+.c-ico svg[data-outline] { fill: none; }
+.c-ico:hover { transform: translateY(-2px); background: var(--accent); color: var(--white); border-color: transparent; }
+.c-yelp {
+  display: inline-flex; align-items: center; height: 44px;
+  text-decoration: none; border-radius: var(--r-pill);
+  transition: transform var(--dur) var(--ease);
+}
+.c-yelp:hover { transform: translateY(-2px); }
+.c-yelp-img { height: 27px; width: auto; margin: 0; max-width: none; display: block; }
+.c-cta {
+  display: inline-flex; align-items: center; min-height: 46px; padding: 0 1.4rem;
+  border-radius: var(--r-pill); background: var(--accent); color: var(--white);
+  font: 700 var(--fs-kicker)/1 var(--sans);
+  letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+  transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+.c-cta:hover { background: var(--accent-ink); transform: translateY(-2px); }
+
+@media (max-width: 760px) {
+  .connect { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; }
+  .c-brand { flex-direction: column; align-items: flex-start; gap: 0.9rem; }
+  .c-side { align-items: flex-start; }
+  .c-row { justify-content: flex-start; }
+}
+
 /* ── editorial sections ───────────────────────────────────────────────────
    An eyebrow label and the heading it introduces are one unit, and grouping
    them also decides the layout. Running copy becomes a two-column block whose
