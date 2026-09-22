@@ -590,14 +590,21 @@ p { margin: 0 0 1.15em; }
   border-radius: var(--r-lg);
   box-shadow: var(--glass-shadow);
 }
-.notice-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.3rem; }
+/* Three columns, not flex: a spacer the width of the close control balances it,
+   so the logo centres on the CARD rather than on the space left beside the
+   button. Everything stays in normal flow — no absolute positioning to come
+   loose when the card scrolls on a short viewport. */
+.notice-top {
+  display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center; gap: 0.75rem; margin-bottom: 1.3rem;
+}
 /* the masthead here is the full logo, not the header's smaller instance: the
    card has the width to carry the stacked lockup at a legible size, and it sits
    level with the 44px close control. */
-.notice-top .brand-logo { height: 52px; }
+.notice-top .brand-logo { grid-column: 2; height: 52px; margin-inline: auto; }
 /* .c-ico supplies the 44px circle, the border, the hover and the 18px svg.
    This is only the reset a <button> needs that an <a> does not. */
-.notice-x { padding: 0; font: inherit; cursor: pointer; }
+.notice-x { grid-column: 3; padding: 0; font: inherit; cursor: pointer; }
 /* --accent measures 4.45:1 on --paper and misses AA for 12px bold by 0.05.
    --accent-ink is 9.12:1. An operational notice is not the place to miss. */
 .notice .kicker { color: var(--accent-ink); margin-bottom: 0.9rem; }
@@ -610,11 +617,9 @@ p { margin: 0 0 1.15em; }
    --ink-body (9.13:1) rather than .hours' --ink-mute (4.42:1, fails AA) */
 .notice .hours { font-size: var(--fs-body); }
 .notice .hours dt { color: var(--ink-body); }
+/* the hours are the last thing in the card, so the card's own padding closes it */
 .notice .hours > div:last-child { border-bottom: 0; }
-.notice-act { display: flex; margin-top: 1.5rem; }
-/* .btn is given min-height only inside the <=834px block, so it computes under
-   44px on desktop. A modal's only primary control does not get to be 41px. */
-.notice-act .btn { min-height: 44px; }
+.notice #notice-d > :last-child { margin-bottom: 0; }
 
 .notice[open] { animation: sr-rise calc(var(--dur) * 0.5) var(--ease) both; }
 /* a DISTINCT name, not sr-rise reversed: re-parameterising a finished

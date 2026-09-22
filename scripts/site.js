@@ -107,9 +107,9 @@
     dlg.className = 'notice';
     dlg.setAttribute('aria-labelledby', 'notice-t');
     dlg.setAttribute('aria-describedby', 'notice-d');
-    // one <form method="dialog"> around the whole card: every dismiss control is
-    // a submit button, so the x, "Got it" and Esc still close the dialog through
-    // the platform even if this script throws after the modal is open.
+    // one <form method="dialog"> around the whole card: the close control is a
+    // submit button, so the x and Esc still close the dialog through the
+    // platform even if this script throws after the modal is open.
     dlg.innerHTML =
       '<form method="dialog" class="notice-card">' +
         '<div class="notice-top">' +
@@ -133,7 +133,6 @@
             '<div><dt>Friday</dt><dd>9am - 1pm</dd></div>' +
           '</dl>' +
         '</div>' +
-        '<div class="notice-act"><button class="btn btn-solid" type="submit">Got it</button></div>' +
       '</form>';
     document.body.appendChild(dlg);
 
@@ -230,8 +229,11 @@
       // stamped on OPEN as well as on close: a visitor who clicks a nav link
       // with the card still up would otherwise meet it again on the next page.
       stamp();
-      var ok = dlg.querySelector('.notice-act .btn');
-      if (ok) ok.focus();
+      // the close control is the only interactive element left, so it takes the
+      // focus. The dialog still announces itself through aria-labelledby and
+      // aria-describedby, so nothing about the payload depends on this.
+      var first = dlg.querySelector('.notice-x');
+      if (first) first.focus();
     } catch (e) {
       // removeChild on an open modal does not fire close, so release the hold
       // here too rather than trusting the close handler to run.

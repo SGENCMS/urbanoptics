@@ -224,8 +224,10 @@ element rule; only the deviations are declared.
   `--accent` is **4.45:1** and misses AA for 12px bold by 0.05; `--accent-ink` is
   **9.12:1**. The hours and dateline take `--ink-body` (9.13:1) rather than
   `.hours`' own `--ink-mute` (**4.42:1**, fails AA).
-- The primary button pins `min-height: 44px`, because `.btn` is given that only
-  inside the `≤834px` block and computes under 44px on desktop.
+- ~~The primary button pins `min-height: 44px`~~ — **withdrawn 2026-09-22**: the
+  "Got it" button was removed at the operator's request, so the × is the only
+  control and `.c-ico` already gives it a hard 44×44. See *The modal loses its
+  button* below.
 - The exit animation has its own keyframe name. Re-parameterising a finished
   animation does not restart it, so reusing the entry name would land the exit
   instantly in its filled after-phase and never fire `animationend`. The script
@@ -262,12 +264,12 @@ reported as stale — see below.
 - Opens on the first page of a session, at any directory depth, with zero URL
   references in its markup; does not reappear on the next page, or on a third,
   or after the visitor navigates away with it still open.
-- Dismisses by **Esc, the ×, "Got it" and a backdrop click** — and in all four
-  cases the dialog closes, the scroll lock is released and the `<html>` padding
-  compensation is restored. A click **inside** the card does not dismiss.
-- Focus lands on the primary control; the close control is a real
-  `<button type="submit">` with an accessible name and a 44×44 target; the
-  primary button is ≥44px tall.
+- Dismisses by **Esc, the × and a backdrop click** — and in all three cases the
+  dialog closes and the scroll hold is released. A click **inside** the card
+  does not dismiss. (A fourth route, the "Got it" button, was removed on
+  2026-09-22 — see below.)
+- Focus lands on the close control, which is a real `<button type="submit">`
+  with an accessible name and a 44×44 target.
 - `aria-describedby` covers the dateline **and** the hours, so the payload is
   announced, not just the date.
 - Reduced motion: opens, is fully opaque, animation nulled, and Esc still closes
@@ -398,3 +400,45 @@ filesystem before anything was written.
   `alt`, checked at three different directory depths. The footer and modal
   instances are `alt=""`, decorative, as the mark they replaced was.
 - No horizontal overflow at 390 or 768; header 72px at every width tested.
+
+## The modal loses its button, and centres its logo — 2026-09-22
+
+Two changes at the operator's request: remove the "Got it" button, and centre
+the logo in the card.
+
+**The button.** It was the modal's focus target on open, so removing it moved
+focus to the ×, which is now the only interactive control. That is also what the
+browser would do unaided — `showModal()` focuses the first focusable element —
+so the explicit call simply states the intent. Nothing else about the component
+depended on it: the × is still a `<button type="submit">` inside
+`<form method="dialog">`, so Esc and the × still close through the platform if
+scripting dies after open, and Esc, the × and the backdrop remain the three
+dismissal routes, each verified to release the scroll hold. `.notice-act` and its
+`min-height` override are deleted; nothing else referenced them.
+
+**The centring.** `.notice-top` is now a three-column grid — `44px | 1fr | 44px`
+— rather than a flex row with `space-between`. The first column is a spacer the
+width of the close control, so the logo centres on the **card**, not on the
+space left beside the button. Measured: the logo's centre sits **0px** from the
+card's content-box centre at 1440, and everything stays in normal flow, so
+nothing comes loose when the card scrolls on a short viewport.
+
+The card is shorter now (297px against 393px), which mattered for one test: the
+internal-scroll check needs a viewport short enough to actually force overflow.
+At 380×360 the card no longer overflows, so that check was silently passing
+nothing; it now runs at 380×280, where `scrollHeight` 297 against `clientHeight`
+266 genuinely overflows and the card scrolls from 0 to 51 while the page behind
+stays at 0.
+
+The notice's copy is untouched. It still contains no call to action, which is
+now literally true of the markup as well.
+
+### Verified
+
+- **52** modal assertions (down from 55: the three that asserted the button is
+  gone, replaced by three that assert it is absent, that focus lands on the
+  close control, and that the logo centres within ±1px — it measures 0px).
+- **12** on each of Chromium, Firefox and WebKit.
+- **5** defect repros and **8** keyboard/scroll assertions, including Space and
+  Enter activating the close control now that it holds focus.
+- **210 pages** swept: 0 broken images, 0 console errors, 0 responses ≥ 400.
