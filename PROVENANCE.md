@@ -442,3 +442,84 @@ now literally true of the markup as well.
 - **5** defect repros and **8** keyboard/scroll assertions, including Space and
   Enter activating the close control now that it holds focus.
 - **210 pages** swept: 0 broken images, 0 console errors, 0 responses ≥ 400.
+
+## The brand showcase and the feature stage — 2026-09-22
+
+Two adjacent home-page sections reworked at the operator's request: make the
+designer-brands grid eye-catching, and make FEATURING read as a feature. Four
+independent treatments were designed and judged on three lenses; what shipped is
+a synthesis, and the judges' must-fix list was applied to it.
+
+**No word was added or removed.** The rendered text of both sections is still
+exactly: OUR FAVOURITE · Designer Brand Names · PENGUIN · OWP · LILLY PULITZER ·
+RAY-BAN · FEATURING. Every alt attribute and the heading's href are unchanged,
+and the client's photographs are shown untouched — no filter, no recolour, no
+crop.
+
+### A pre-existing accessibility defect, fixed on the way
+
+`.ed-eyebrow` was `color: var(--ink-mute)`. Measured: **4.42:1** on `--paper` and
+**4.01:1** on `--paper-2`, both below AA for 12px bold. It is now `--ink-body` —
+**9.13:1** and **8.29:1**. This affects all four eyebrows on the home page and
+the two on `/privacy-policy/`, which was checked separately.
+
+### The dash bitmaps are gone
+
+Each eyebrow opened with `1025cf63-Dash-white.png` or `532e7ff9-Dash-blk.png`,
+rendered at `height: 8px; opacity: .5` — a **237×8 grey bar** floating above the
+label that read as a stray artifact in both screenshots the operator sent. All
+four were `alt=""`, so nothing was lost with them. `.ed-eyebrow` now draws the
+system's own device instead: a 1px `--line` hairline running to the edge, which
+is exactly what `.kicker::after` already does. `.ed-eyebrow img` is deleted, and
+the images are referenced nowhere else in the tree.
+
+### Section A — the showcase
+
+- The section takes `--paper-2`, the system's existing tint, with a `--line`
+  hairline and `--r-lg`. Deliberately **not** `[data-glass]`: glass is for panels
+  over imagery, and `.menu` already records that a translucent fill over live
+  type measured unreadable.
+- The heading was a link, so it inherited `a { color: --accent-ink }` plus an
+  underline and read as a raw hyperlink. It is now `--ink` with no underline and
+  a CSS-drawn chevron — `content: ''`, a shape and not a string, so a screen
+  reader is handed nothing extra. The href is untouched.
+- Each photograph gets **one** frame, not five: a `--paper` tile with a hairline
+  and `--r`, the photo running to its edges, and the caption on its own ground
+  below a `--line-soft` rule with an accent tick. Four tonally unrelated
+  photographs (one bright pink, one on white, two mid-tone) are reconciled by a
+  common mount rather than by filtering the client's own photography.
+- The cards are **not** links. Making them links would imply a page per brand
+  that does not exist; the heading already routes to the one that does.
+
+### Section B — the feature stage
+
+- The section takes `--deep`, the same ground as the hero and the footer, which
+  is what makes it register as a spotlight without adding a single word.
+- Contained, not full-bleed. `margin-inline: calc(50% - 50vw)` works only because
+  `body { overflow-x: hidden }` clips the scrollbar width out of `100vw`; this
+  component should not depend on that coupling.
+- `.ed-bar`'s hairline is meant for paper, so the header wrapper goes and the
+  eyebrow carries the label directly at `--on-deep` (**15.87:1**).
+- **Scoped.** `.prose-banner` is used on 21 pages. The rule is
+  `.prose .ed-feature .prose-banner` — (0,3,0), which out-specifies
+  `.prose img.prose-banner` (0,2,1) and matches only inside `.ed-feature`, a
+  class that exists on the home page alone.
+
+### Verified
+
+41 assertions, all passing:
+
+- Contrast measured in the browser against the real composited grounds: eyebrow
+  on tint **8.29:1**, caption on card **17.41:1**, heading on tint **15.83:1**,
+  feature eyebrow on `--deep` **15.87:1**.
+- **The scoping proof**: on `/eye-care-services/eye-exams/`, `/eye-care-services/`
+  and `/eye-care-services/latisse/`, the banner still computes its original
+  `28.8px 0px 35.2px` prose margin and neither new section exists.
+- Captions, heading text, heading href and banner alt all byte-identical; zero
+  links inside the brand cards; both regions named by text already on the page.
+- 390 / 768 / 1440: photographs 142 / 206 / 253px — never the thumbnail sizes the
+  review warned about — card bottoms aligned within every row, no horizontal
+  overflow. At 390 the grid goes two-up, which took the showcase from **1823px**
+  to **612px** tall.
+- All 210 pages re-swept: 0 broken images, 0 console errors, 0 responses ≥ 400.
+  Modal suite 52/52 and 12/12 on each of Chromium, Firefox and WebKit, unchanged.
