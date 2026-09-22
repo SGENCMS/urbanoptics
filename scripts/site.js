@@ -70,16 +70,27 @@
   // reaching for is exactly what .kicker is for. To put them back literally,
   // edit LABEL below — it is the only place the word appears.
   //
-  // Built here rather than pasted into 211 files: it is an enhancement, it
-  // references no URL (so no relative path can be wrong at any depth), and one
-  // source cannot drift out of sync across the tree. With JavaScript off the
-  // page is exactly as it was, and the same hours still sit in the .facts card
-  // on every page — nothing is lost, and no overlay can be left stranded.
+  // Built here rather than pasted into 211 files: it is an enhancement, one
+  // source cannot drift out of sync across the tree, and with JavaScript off
+  // the page is exactly as it was — the same hours still sit in the .facts card
+  // on every page, and no overlay can be left stranded.
   //
   // Shows once per browsing session, matching the source's session cookie.
   // Bump KEY after editing the copy and every visitor sees it again.
   var KEY = 'uo-notice-2026-09-08';
   var LABEL = 'NOTICE';
+
+  // The one URL this component needs is the logo, and these 211 pages sit at
+  // six different depths. Rather than hardcode a path that is wrong on 209 of
+  // them, take the prefix from a file the page has ALREADY resolved correctly:
+  // its own link to site.css. '../../styles/site.css' yields '../../'. Falls
+  // back to no prefix, which is right for a page at the root.
+  var assetBase = (function () {
+    var l = document.querySelector('link[rel="stylesheet"][href*="styles/site.css"]');
+    var h = l && l.getAttribute('href');
+    return h ? h.replace(/styles\/site\.css.*$/, '') : '';
+  })();
+  var LOGO = assetBase + 'assets/img/urban-optics-logo-unboxed.png';
 
   var canDialog = typeof HTMLDialogElement === 'function' &&
     HTMLDialogElement.prototype && typeof HTMLDialogElement.prototype.showModal === 'function';
@@ -102,7 +113,8 @@
     dlg.innerHTML =
       '<form method="dialog" class="notice-card">' +
         '<div class="notice-top">' +
-          '<span class="brand-mark" aria-hidden="true"></span>' +
+          // decorative: the dialog is already labelled by its <h2>
+          '<img class="brand-logo" src="' + LOGO + '" alt="" width="373" height="183" decoding="async">' +
           '<button class="c-ico notice-x" type="submit" title="Close (Esc)">' +
             '<svg viewBox="0 0 24 24" data-outline stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">' +
               '<path d="M6 6 18 18M18 6 6 18"/>' +

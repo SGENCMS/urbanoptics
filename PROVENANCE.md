@@ -327,3 +327,74 @@ motion — and not on a second opinion.
   scrolling and touch
 - **210** pages swept: 0 console errors, 0 responses ≥ 400, no stranded lock or
   padding, no unpinned sticky header, no title prefix
+
+## The brand logo — 2026-09-22
+
+The operator supplied the Urban Optics logo and asked for it in the header, the
+notice modal, and the site generally. It replaces the drawn `.brand-mark` — a
+red ring with an ink dot, invented by the rebuild — and the set `.brand-name`
+wordmark, on all 210 pages that carry the chrome.
+
+### Which file, and why not the one supplied
+
+The supplied file and `assets/img/urban-optics-logo-unboxed.png` are **the same
+artwork**, measured: ink-box aspect 2.070 vs 2.075, and normalised to a common
+height of 200px their widths come out 414 vs 415. Nothing is cropped or
+different between them.
+
+They are not the same *file*:
+
+| | supplied | shipped |
+| --- | --- | --- |
+| canvas | 196 × 127 | 373 × 183 |
+| actual ink | 145 × 70 | 371 × 179 |
+| background | opaque `rgb(253,253,252)` | **transparent** |
+
+At the header's 36–44px the supplied file would be scaled from 70px of ink
+rather than 179px, and its opaque near-white background would paint a visible
+box over the glass header, the modal's `--menu-bg` panel and the dark footer.
+So the shipped copy of the same drawing is used instead. The highest resolution
+that exists anywhere is 410 × 226 — the client's own CDN original, which is the
+*boxed* version with a black frame burnt in; `urban-optics-logo-unboxed.png` is
+already derived from it.
+
+Nothing was invented or redrawn. No new asset was added.
+
+### Where it goes
+
+| Place | Treatment |
+| --- | --- |
+| Header, 210 pages | `height: clamp(36px, 3.2vw, 44px)`. This is a **stacked** lockup, so it needs height to stay legible, but the header's height is set by the CTA button at 44.8px — 44px is the most it can take without making the bar taller. Measured: the header stays 72px from 390 to 1440. |
+| Notice modal | 52px. The card has the width to carry the lockup at a legible size, level with the 44px close control. |
+| Footer, 210 pages | `filter: invert(1)` at `opacity: .94`. The artwork is pure black on transparency and the footer is `--deep`; inverted it matches `--on-deep`. |
+| `.connect` strip | Already used this same file. Unchanged. |
+
+### Two things worth knowing
+
+**The header no longer says "Oklahoma City".** The old lockup set *Urban Optics*
+beside the mark with *Oklahoma City* under it. The logo already carries the
+name, so keeping it would have been the same word twice — but the locality is
+real content, so it was not dropped silently. It was tested: with the locality
+kept as a divider-separated tag, the brand block goes from 90px to 222px and at
+1024px the nav wraps and the header grows from 72px to **87px**. Logo-only holds
+72px at every width. The locality remains on every page in the `.facts` card
+address and the footer address.
+
+**The modal builds one URL now.** It previously referenced none by design, since
+these 211 pages sit at six different depths. Rather than hardcode a path wrong on
+209 of them, it takes the prefix from a file the page has already resolved
+correctly — its own `<link>` to `site.css` — so `../../styles/site.css` yields
+`../../`. In the static pages the prefix comes from that page's own
+`<a class="brand" href>`, and every generated `src` was resolved against the
+filesystem before anything was written.
+
+### Verified
+
+- **55** modal assertions (up from 53: the logo loads, is decorative, renders at
+  52px), plus **12** on each of Chromium, Firefox and WebKit.
+- **210 pages swept**: exactly 2 page-level brand logos each, **0 broken images
+  of any kind**, 0 console errors, 0 responses ≥ 400.
+- The header link keeps an accessible name — "Urban Optics Eyecare", from the
+  `alt`, checked at three different directory depths. The footer and modal
+  instances are `alt=""`, decorative, as the mark they replaced was.
+- No horizontal overflow at 390 or 768; header 72px at every width tested.

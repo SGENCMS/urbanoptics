@@ -64,10 +64,15 @@ p { margin: 0 0 1.15em; }
 .site-head { position: sticky; top: 0; z-index: 50; border-inline: 0; border-top: 0; border-radius: 0; }
 .head-in { display: flex; align-items: center; gap: clamp(1rem, 3vw, 2.4rem); padding: 0.85rem 0; }
 .brand { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; color: var(--ink); flex: none; }
-.brand-mark { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--accent); position: relative; flex: none; }
-.brand-mark::after { content: ''; position: absolute; inset: 7px; border-radius: 50%; background: var(--ink); }
-.brand-name { font: 600 1.05rem/1 var(--serif); letter-spacing: -0.01em; display: flex; flex-direction: column; gap: 3px; }
-.brand-name em { font: 700 0.62rem/1 var(--sans); font-style: normal; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-mute); }
+/* The client's own logo lockup, replacing the drawn mark and the set wordmark.
+   It is a STACKED lockup — glasses over URBAN OPTICS over EYECARE — so it needs
+   height to stay legible, but the header's own height is set by the CTA button
+   at 44.8px. 44px is therefore the most it can take without making the header
+   taller; measured, the bar stays 72px from 1024 to 1440. */
+.brand-logo { height: clamp(36px, 3.2vw, 44px); width: auto; display: block; }
+/* The footer sits on --deep. The artwork is pure black on transparency, so it
+   is inverted to white there and held at --on-deep's own 0.94. */
+.foot-brand .brand-logo { filter: invert(1); opacity: 0.94; margin-bottom: 1rem; }
 .nav { flex: 1; min-width: 0; }
 .nav-l1 { list-style: none; display: flex; gap: clamp(0.6rem, 1.6vw, 1.5rem); margin: 0; padding: 0; }
 .nav-l1 > li > a { font: 600 var(--fs-small)/1 var(--sans); color: var(--ink); text-decoration: none; padding: 0.5rem 0; display: inline-block; border-bottom: 1px solid transparent; }
@@ -486,8 +491,6 @@ p { margin: 0 0 1.15em; }
 .site-foot .hours > div { border-bottom-color: var(--glass-dark-brd); }
 .site-foot .hours dt { color: var(--on-deep-mute); }
 .site-foot .hours dd { color: var(--on-deep); }
-.foot-brand .brand-mark { margin-bottom: 1rem; }
-.foot-brand .brand-mark::after { background: var(--on-deep); }
 .foot-tag { font: 400 1.25rem/1.25 var(--serif); color: var(--on-deep); margin-bottom: 1rem; }
 .foot-brand p { font-size: var(--fs-small); }
 .foot-legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; margin-top: var(--band); padding-top: 1.6rem; border-top: 1px solid var(--glass-dark-brd); font-size: var(--fs-small); }
@@ -588,12 +591,10 @@ p { margin: 0 0 1.15em; }
   box-shadow: var(--glass-shadow);
 }
 .notice-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.3rem; }
-/* the mark is the masthead here, not a 30px item in a nav row — scaled to sit
-   level with the 44px close control. .brand-mark's own inset is a fixed 7px at
-   30px, so it is re-tuned here rather than left at a value cut for the smaller
-   mark; 9px is the nearest whole pixel to that ratio. */
-.notice-top .brand-mark { width: 40px; height: 40px; }
-.notice-top .brand-mark::after { inset: 9px; }
+/* the masthead here is the full logo, not the header's smaller instance: the
+   card has the width to carry the stacked lockup at a legible size, and it sits
+   level with the 44px close control. */
+.notice-top .brand-logo { height: 52px; }
 /* .c-ico supplies the 44px circle, the border, the hover and the 18px svg.
    This is only the reset a <button> needs that an <a> does not. */
 .notice-x { padding: 0; font: inherit; cursor: pointer; }
