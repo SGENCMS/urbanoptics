@@ -551,3 +551,88 @@ p { margin: 0 0 1.15em; }
   .foot-legal { flex-direction: column; }
   .hero-home h1 { max-width: none; }
 }
+
+/* ── the office-hours notice ──────────────────────────────────────────────
+   A native <dialog> opened with showModal(). The top layer clears the preview
+   banner (z-index 200) and the sticky .site-head (50) without this component
+   owning a z-index at all, and focus containment comes from the platform
+   rather than from a hand-rolled trap. The markup is built in scripts/site.js
+   — the note there records the source modal verbatim.
+
+   The panel takes .menu's OPAQUE fill, not the glass one, for the reason
+   already recorded against .menu: at 58% the page type showed straight through
+   and the copy became unreadable. Same evidence, same decision.
+
+   Reused rather than re-declared: .kicker, .c-ico, <dl class="hours">, .btn,
+   and the bare h2 element rule. Only the deviations are written here. */
+.notice {
+  /* every pixel of padding lives on the card, so a click whose target IS the
+     dialog can only have landed on the backdrop */
+  padding: 0; border: 0; background: none; overflow: visible;
+  width: min(100% - (var(--gutter) * 2), 420px);
+  max-height: calc(100vh - 2rem);
+  color: var(--ink-body);
+}
+.notice::backdrop { background: var(--scrim); }
+.notice-card {
+  display: block; max-height: calc(100vh - 2rem); overflow-y: auto;
+  /* On a short viewport the card scrolls. Without this, a wheel gesture that
+     reaches the card's end chains to the document behind it — measured 260px of
+     background scroll at 380x360 — because the script deliberately lets wheel
+     events through while the card itself can still scroll. */
+  overscroll-behavior: contain;
+  padding: clamp(1.4rem, 4vw, 2rem);
+  background: var(--menu-bg);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--glass-shadow);
+}
+.notice-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.3rem; }
+/* the mark is the masthead here, not a 30px item in a nav row — scaled to sit
+   level with the 44px close control. .brand-mark's own inset is a fixed 7px at
+   30px, so it is re-tuned here rather than left at a value cut for the smaller
+   mark; 9px is the nearest whole pixel to that ratio. */
+.notice-top .brand-mark { width: 40px; height: 40px; }
+.notice-top .brand-mark::after { inset: 9px; }
+/* .c-ico supplies the 44px circle, the border, the hover and the 18px svg.
+   This is only the reset a <button> needs that an <a> does not. */
+.notice-x { padding: 0; font: inherit; cursor: pointer; }
+/* --accent measures 4.45:1 on --paper and misses AA for 12px bold by 0.05.
+   --accent-ink is 9.12:1. An operational notice is not the place to miss. */
+.notice .kicker { color: var(--accent-ink); margin-bottom: 0.9rem; }
+.notice h2 { margin: 0 0 0.4rem; }
+/* the source set this at 30px bold, level with the headline. A dateline for an
+   already-effective change reads as a mistake at that weight; the same words,
+   set as a dateline, read as "in force since". The words are untouched. */
+.notice-when { margin: 0 0 1.2rem; font: 700 var(--fs-small)/1.45 var(--sans); letter-spacing: 0.02em; color: var(--ink-body); }
+/* the hours ARE the payload here, so they are set at body size, and dt takes
+   --ink-body (9.13:1) rather than .hours' --ink-mute (4.42:1, fails AA) */
+.notice .hours { font-size: var(--fs-body); }
+.notice .hours dt { color: var(--ink-body); }
+.notice .hours > div:last-child { border-bottom: 0; }
+.notice-act { display: flex; margin-top: 1.5rem; }
+/* .btn is given min-height only inside the <=834px block, so it computes under
+   44px on desktop. A modal's only primary control does not get to be 41px. */
+.notice-act .btn { min-height: 44px; }
+
+.notice[open] { animation: sr-rise calc(var(--dur) * 0.5) var(--ease) both; }
+/* a DISTINCT name, not sr-rise reversed: re-parameterising a finished
+   animation does not restart it, so the exit would land instantly in its
+   filled after-phase and never fire animationend. The JS does not wait on
+   animationend either — it closes on a timer — so neither half can strand a
+   modal open, invisible, with focus trapped. */
+.notice.is-closing { animation: notice-out calc(var(--dur) * 0.35) var(--ease) both; }
+@keyframes notice-out { from { opacity: 1; } to { opacity: 0; transform: translateY(6px); } }
+
+/* the resting state is already visible, so nulling the animation cannot hide
+   the dialog. Holding ::backdrop explicitly matters: a blanket opacity:1 here
+   would paint the scrim solid and black the page out instead of dimming it. */
+@media (prefers-reduced-motion: reduce) {
+  .notice[open], .notice.is-closing { animation: none !important; }
+  .notice::backdrop { animation: none !important; background: var(--scrim); }
+}
+/* There is deliberately no `html { overflow: hidden }` scroll lock here.
+   Setting overflow on the root destroys the viewport scroll container, which
+   unpins every position:sticky element — measured: entering at /#facts-h, the
+   sticky .site-head dropped 4268px out of view while the modal was open and
+   popped back on dismissal. scripts/site.js blocks the input instead. */

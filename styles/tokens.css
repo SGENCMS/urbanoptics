@@ -146,4 +146,8 @@
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --dur: 480ms;
+
+  /* the modal scrim — --deep (#0f1918) at 58%. It lives here, not at the call
+     site, because site.css carries no colour literal by design. */
+  --scrim: rgba(15, 25, 24, 0.58);
 }
