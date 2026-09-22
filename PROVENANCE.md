@@ -90,3 +90,74 @@ an outcome.
   carries each one — 0 escape the site root.
 - **Tree**: `robots.txt` disallows all, `.nojekyll` present, `sitemap.xml` and
   `llms.txt` absent.
+
+## Refinement pass — 2026-09-22
+
+A design pass over the shipped preview: close one large measured gap, take out
+what the page said twice, and repair alt text that named the wrong thing. No copy
+was written, no claim added. Everything removed is listed here with its reason, so
+the cut is on the record rather than inferred from a diff.
+
+### The gap under the Paradigm banner
+
+Measured at 253 px on desktop (163 px at 768 and below) between the banner and the
+`Visit Urban Optics` card. It was three spacers stacked: the last section's
+`margin-bottom` (51.2 px), `.layout-read`'s `padding-bottom` (100.8 px) and the
+enclosing `.band`'s `padding-bottom` (100.8 px).
+
+`.layout-read` sits directly under `<main>` on 209 pages, where that padding is the
+only spacer and has to stay; the home page is the one page that also wraps it in a
+`.band`, so only there did the two stack. The band now pays it once. A fourth 35 px
+came from `.prose img.prose-banner` (0,2,1) out-specifying `.ed-wide > :last-child`
+(0,2,0), so a section ending on a banner kept its trailing margin.
+
+Result: **101 px desktop, 56 px at 768 and below** — one `--band`, the same figure
+`/insurance/` and `/eye-care-services/eye-exams/` already measured.
+
+### Removed as duplicate — site-wide, all 210 pages
+
+| Removed | Why |
+| --- | --- |
+| The footer's `Hours` column | The identical seven-row table sits ~100 px above it inside the `.facts` card, on every page. One table per page now. |
+| The mini search form in the `.facts` *Book* column | Search is not a booking action, and the footer carries a dedicated Search column. |
+| The legal bar's `Search` link | Third route to the same page on a page that already has the footer's search field. |
+
+### Removed as duplicate — home page
+
+| Removed | Why |
+| --- | --- |
+| `ul.tile-grid` — ten pills | `<span>`s, not links: no destination, and the labels restate the eight-card services band directly above. |
+| `p.c-tag` in the connect strip | The hero `<h1>` states the same line ~440 px above, and the footer states it again. Shown twice now instead of three times. |
+| `a.c-cta` in the connect strip | Fourth `Request an Appointment` on one page. The three that remain each do a distinct job — sticky header, hero, and the conversion panel. The strip now does one thing: follow and review. |
+| `p.prose-mark` | Two dash images used as a divider, duplicating the `.ed-eyebrow` device every section already carries. |
+| `p > strong > ___` | A literal `___` rendering on the page between the banner and *Trendy Frames*. |
+| Empty `p.lede` in the hero | No content, no purpose. |
+
+Their rules — `.tile-grid`, `.prose-mark`, `.c-tag`, `.c-cta` — were deleted from
+`styles/site.css` in the same pass; nothing else referenced them.
+
+### Structure and alt text
+
+- The welcome section was the only `.ed-wide` with an eyebrow and no heading, its
+  title carried by a `<p><strong>`. It is now an `<h2>` inside the `.ed-bar`, like
+  its siblings.
+- *3 Things That Make Urban Optics Unique* was also a `<p><strong>`. It now heads
+  its own `.ed-wide` section with a real `<h2>`.
+- Four decorative dash rules carried `alt="Dash blk"` / `alt="Dash white"`; they are
+  now `alt=""`.
+- Three brand cards named the **wrong brand** in their alt text — the Penguin card
+  said *lamb*, the OWP card said *Kate Spade*, the Ray-Ban card said *Lacoste*. The
+  Paradigm banner used its filename, `paradigm1500`. Each alt now describes the
+  photograph; the `<figcaption>` still carries the brand.
+
+### Verified after the pass
+
+- **Gap**: 253 → 101 px desktop, 163 → 56 px at 768 and 375, re-read from the
+  rendered page, not from the stylesheet.
+- **All 210 pages loaded** in a browser: exactly one hours table, one search form,
+  one `.facts` card, one footer and one `<h1>` each; no empty footer column; **0
+  console errors and 0 responses ≥ 400**.
+- **Home page height**: 6,159 → 5,677 px desktop, 11,805 → 10,059 px at 375.
+- **Removed**: 2,102 lines of duplicated markup across 210 pages (212 inserted),
+  and 36 lines of now-dead CSS.
+- No horizontal overflow at 390 px.
