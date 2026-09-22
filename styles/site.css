@@ -153,6 +153,12 @@ p { margin: 0 0 1.15em; }
    the right of the prose. space-between puts that slack in the gutter, which
    leaves content on both edges. */
 .layout-read { display: grid; grid-template-columns: minmax(0, var(--measure)) 300px; justify-content: space-between; gap: clamp(2rem, 4vw, 3.5rem); align-items: start; padding-bottom: var(--band); }
+/* On 209 pages .layout-read sits directly under <main> and its padding-bottom IS
+   the only spacer before the facts card. The home page is the one page that wraps
+   it in .band, which already pays var(--band) top and bottom — so there the two
+   stacked and the measured gap under the last section came to 253px against the
+   101px every other page shows. Pay it once, in the band. */
+.band > .layout-read { padding-bottom: 0; }
 /* The rail precedes the prose in SOURCE order (so the prose is the last text in
    <main>); grid placement puts it back on the right visually. */
 .layout-read > .prose { grid-column: 1; grid-row: 1; }
@@ -167,6 +173,9 @@ p { margin: 0 0 1.15em; }
 .layout-single { grid-template-columns: minmax(0, 1fr); }
 .layout-single > .prose { grid-column: 1; margin-inline: auto; max-width: 74ch; }
 .prose { max-width: var(--measure); }
+/* The article's own trailing margin is not spacing anything — the layout below it
+   is. Letting it through added another 51px under the last section. */
+.prose > :last-child { margin-bottom: 0; }
 .prose > h2 { margin-top: 2.4em; padding-top: 1.1rem; border-top: 1px solid var(--line-soft); }
 .prose > h3 { margin-top: 1.9em; }
 .prose > p:first-of-type { font-size: var(--fs-lede); }
@@ -223,31 +232,10 @@ p { margin: 0 0 1.15em; }
 }
 .feature-card p { margin: 0; font-size: var(--fs-small); max-width: none; }
 
-.tile-grid {
-  list-style: none; padding: 0;
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 0.6rem; margin: 1.6rem 0 2.6rem;
-}
-.tile-grid li { margin: 0; }
-.tile-grid li > a, .tile-grid li > span {
-  display: flex; align-items: center; min-height: 64px;
-  padding: 0.9rem 1.1rem; border-radius: var(--r);
-  border: 1px solid var(--line); background: var(--paper);
-  font: 700 var(--fs-kicker)/1.35 var(--sans);
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink); text-decoration: none;
-  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
-.tile-grid li > a:hover { border-color: var(--accent); transform: translateY(-2px); }
-
 .prose img.prose-banner {
   width: 100%; max-width: none; border-radius: var(--r);
   display: block; margin: 1.8rem 0 2.2rem;
 }
-/* the source's decorative rules, kept because dropping them would lose content */
-.prose-mark { margin: 2.2rem 0 0.6rem; max-width: none; }
-.prose-mark img { height: 10px; width: auto; opacity: 0.55; }
-
 /* ── the connect strip ────────────────────────────────────────────────────
    The home page's prose OPENED with the source site's own header markup: a Yelp
    badge, four bare underlined links, the boxed logo, a second "Request an
@@ -284,11 +272,6 @@ p { margin: 0 0 1.15em; }
   width: auto; height: clamp(52px, 7vw, 72px);
   margin: 0; max-width: none;
 }
-.c-tag {
-  margin: 0; max-width: none;
-  font: 700 var(--fs-kicker)/1.5 var(--sans);
-  letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute);
-}
 .c-side { display: flex; flex-direction: column; align-items: flex-end; gap: 0.7rem; }
 /* icons and the appointment button share a row: stacked, they left the card
    half-empty below them */
@@ -323,15 +306,6 @@ p { margin: 0 0 1.15em; }
 }
 .c-yelp:hover { transform: translateY(-2px); }
 .c-yelp-img { height: 27px; width: auto; margin: 0; max-width: none; display: block; }
-.c-cta {
-  display: inline-flex; align-items: center; min-height: 46px; padding: 0 1.4rem;
-  border-radius: var(--r-pill); background: var(--accent); color: var(--white);
-  font: 700 var(--fs-kicker)/1 var(--sans);
-  letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
-  transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
-}
-.c-cta:hover { background: var(--accent-ink); transform: translateY(-2px); }
-
 @media (max-width: 760px) {
   .connect { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; }
   .c-brand { flex-direction: column; align-items: flex-start; gap: 0.9rem; }
@@ -390,7 +364,11 @@ p { margin: 0 0 1.15em; }
 .ed-wide > p,
 .ed-wide > ul:not([class]),
 .ed-wide > ol:not([class]) { max-width: var(--measure); }
-.ed-wide > :last-child { margin-bottom: 0; }
+/* Both forms are needed: .prose img.prose-banner is (0,2,1) and out-specifies a
+   bare .ed-wide > :last-child (0,2,0), which left 35px under a section that ends
+   on a banner. The .prose-scoped selector is (0,3,0) and settles it. */
+.ed-wide > :last-child,
+.prose .ed-wide > :last-child { margin-bottom: 0; }
 
 @media (max-width: 760px) {
   /* must out-specify .page-home .ed-split, or the two-column rule wins here */
@@ -426,6 +404,11 @@ p { margin: 0 0 1.15em; }
 .search label { font: 700 var(--fs-kicker)/1 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mute); }
 .search input { padding: 0.9rem 1.1rem; border: 1px solid var(--line); border-radius: var(--r-pill); background: var(--white); color: var(--ink); font: var(--fs-body) var(--sans); }
 .search .btn { justify-self: start; }
+/* The stacked grid is right for the search PAGE's own form. The mini form is a
+   footer utility: its label is .sr-only and therefore out of flow, so the grid
+   holds exactly two items and they read better as one row than as a pill with a
+   button orphaned underneath it. */
+.search-mini { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0.5rem; margin-bottom: 0; }
 
 /* ── preserved patient forms ──────────────────────────────────────────────
    The contact and registration forms ship from the source with every field,
