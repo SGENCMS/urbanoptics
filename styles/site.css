@@ -253,44 +253,64 @@ p { margin: 0 0 1.15em; }
    Hover states use the palette's own tokens rather than each network's brand
    hex. That keeps the strip inside the design system and keeps C13 honest:
    every colour here resolves to a token. */
+/* A compact glass strip in the same language as the service cards: [data-glass]
+   surface, the .kicker label with its hairline, and .btn-ghost-style pills.
+   Scoped under .connect because it sits inside .prose, whose .prose img /
+   .prose a / .prose ul (0,1,1) would otherwise out-specify it. */
 .connect {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: clamp(1.4rem, 4vw, 3rem);
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(1.2rem, 3.5vw, 2.6rem);
   align-items: center;
   margin: 0 0 clamp(2.2rem, 5vw, 3.4rem);
-  padding: clamp(1.3rem, 3vw, 1.9rem) clamp(1.3rem, 3vw, 2.1rem);
-  border: 1px solid var(--glass-brd);
-  border-radius: var(--r-lg);
-  background: var(--glass);
-  backdrop-filter: blur(var(--blur)) saturate(1.4);
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(1.4);
-  box-shadow: var(--shadow-1);
+  padding: clamp(1rem, 2.4vw, 1.4rem) clamp(1.2rem, 3vw, 2rem);
+  border-radius: var(--r);
 }
-.c-brand { display: flex; align-items: center; gap: clamp(1rem, 2.5vw, 1.6rem); }
-.c-brand > a { flex: 0 0 auto; display: block; }
+.connect .c-brand {
+  display: block; margin: 0; padding: 0 clamp(1.2rem, 3.5vw, 2.6rem) 0 0;
+  border-right: 1px solid var(--line);
+}
 /* The black box is part of the logo BITMAP, not a border that can be turned off.
-   A clip-path inset was tried and left the vertical rules showing — the element
-   is scaled, so the percentage that clears a 5px frame is not eyeballable.
    unbox-logo.mjs measures and crops the file instead; nothing to trim here. */
-.c-logo {
-  width: auto; height: clamp(52px, 7vw, 72px);
-  margin: 0; max-width: none;
-}
-.c-side { display: flex; flex-direction: column; align-items: flex-end; gap: 0.7rem; }
-/* icons and the appointment button share a row: stacked, they left the card
-   half-empty below them */
-.c-row { display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap; justify-content: flex-end; }
-.c-label {
+.connect .c-logo { display: block; width: auto; height: clamp(44px, 5vw, 56px); margin: 0; max-width: none; border-radius: 0; }
+.connect .c-side { display: flex; flex-direction: column; gap: 0.8rem; min-width: 0; }
+.connect .c-label {
   margin: 0; max-width: none;
   font: 700 var(--fs-kicker)/1 var(--sans);
-  letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-mute);
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
+  display: flex; align-items: center; gap: 0.7rem;
 }
-.c-links {
+.connect .c-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.connect .c-chips {
   list-style: none; margin: 0; padding: 0;
-  display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.6rem;
 }
-.c-links li { margin: 0; }
+.connect .c-chips li { margin: 0; padding: 0; }
+.connect .c-chip {
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; white-space: nowrap;
+  margin: 0; padding: 0.6rem 1.05rem; min-height: 40px; border-radius: var(--r-pill);
+  border: 1px solid var(--line); background: var(--paper); color: var(--ink);
+  font: 700 var(--fs-small)/1 var(--sans); letter-spacing: 0.02em; text-decoration: none;
+  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.connect .c-chip svg { width: 16px; height: 16px; flex: 0 0 auto; fill: currentColor; }
+/* an outline-drawn icon must keep fill:none — the rule above is a declaration
+   and would otherwise beat the inline fill attribute, filling it solid */
+.connect .c-chip svg[data-outline] { fill: none; }
+.connect .c-yelp-img { height: 18px; width: auto; margin: 0; max-width: none; display: block; border-radius: 0; }
+.connect .c-chip:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .connect .c-chip:hover { transform: none; } }
+@media (max-width: 1000px) { .connect .c-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 440px) {
+  .connect .c-chips { display: flex; flex-wrap: wrap; }
+  .connect .c-chips li { flex: 1 1 auto; }
+  .connect .c-chip { padding-inline: 0.85rem; }
+}
+@media (max-width: 640px) {
+  .connect { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .connect .c-brand { padding: 0 0 1rem; border-right: 0; border-bottom: 1px solid var(--line); }
+}
+/* .c-ico: the 44px circle icon, reused outside this strip */
 .c-ico {
   display: grid; place-items: center;
   width: 44px; height: 44px; border-radius: 50%;
@@ -304,19 +324,6 @@ p { margin: 0 0 1.15em; }
    and would otherwise beat the inline fill attribute, filling it solid */
 .c-ico svg[data-outline] { fill: none; }
 .c-ico:hover { transform: translateY(-2px); background: var(--accent); color: var(--white); border-color: transparent; }
-.c-yelp {
-  display: inline-flex; align-items: center; height: 44px;
-  text-decoration: none; border-radius: var(--r-pill);
-  transition: transform var(--dur) var(--ease);
-}
-.c-yelp:hover { transform: translateY(-2px); }
-.c-yelp-img { height: 27px; width: auto; margin: 0; max-width: none; display: block; }
-@media (max-width: 760px) {
-  .connect { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; }
-  .c-brand { flex-direction: column; align-items: flex-start; gap: 0.9rem; }
-  .c-side { align-items: flex-start; }
-  .c-row { justify-content: flex-start; }
-}
 
 /* ── editorial sections ───────────────────────────────────────────────────
    An eyebrow label and the heading it introduces are one unit, and grouping
@@ -743,3 +750,16 @@ p { margin: 0 0 1.15em; }
      halves the scroll. */
   .ed-showcase .brand-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* Card imagery: full-bleed to the card's edges, above the heading */
+.card, .feature-card { overflow: hidden; }
+.card-media {
+  display: block; width: calc(100% + 3.2rem); max-width: none; height: auto;
+  aspect-ratio: 3 / 2; object-fit: cover;
+  margin: -1.6rem -1.6rem 0.9rem;
+}
+.card .card-media { transition: transform var(--dur) var(--ease); }
+.card:hover .card-media { transform: scale(1.03); }
+@media (prefers-reduced-motion: reduce) { .card:hover .card-media { transform: none; } }
+/* (0,2,0) out-specifies .prose img (0,1,1), which would reset margin and radius */
+.feature-card .card-media { margin: -1.6rem -1.6rem 1.2rem; border-radius: 0; }
