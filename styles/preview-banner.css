@@ -6,3 +6,6 @@
 [data-preview-formnotice]{border:2px solid #e51d1d;background:#fff5f5;color:#16151a;padding:1rem 1.15rem;border-radius:8px;margin:0 0 1.6rem;font:400 0.9375rem/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
 [data-preview-formnotice] strong{display:block;margin-bottom:0.25rem;font-weight:700}
 [data-preview-formnotice] a{color:#8d0f0f}
+
+/* touch: the "Visit the real site" link gets a real 44px target on touch screens */
+@media (max-width:834px),(pointer:coarse){[data-preview-banner] a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;vertical-align:middle}[data-preview-banner]{padding-block:0.2rem}}

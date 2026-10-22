@@ -90,7 +90,7 @@
     var h = l && l.getAttribute('href');
     return h ? h.replace(/styles\/site\.css.*$/, '') : '';
   })();
-  var LOGO = assetBase + 'assets/img/urban-optics-logo-unboxed.png';
+  var LOGO = assetBase + 'assets/img/urban-optics-logo-unboxed.webp';
 
   var canDialog = typeof HTMLDialogElement === 'function' &&
     HTMLDialogElement.prototype && typeof HTMLDialogElement.prototype.showModal === 'function';
