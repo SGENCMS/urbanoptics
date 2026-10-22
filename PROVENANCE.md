@@ -61,11 +61,11 @@ on the patient intake form mandatory), and 206 pages carried multiple `<h1>`s.
 
 | | Why |
 | --- | --- |
-| `<link rel="canonical">` → the client's own URL, on every page | Correct for a duplicate, and deliberately different from `og:url`, which drives unfurl cards |
-| The 39 dead internal links | They are the source's own link rot. 3 point at URLs the live site itself returns 404 for; 36 at pages that never existed on it. Repointing them would invent destinations the client never had. |
+| ~~`<link rel="canonical">` → the client's own URL, on every page~~ | **No longer true as of 2026-10-23.** Canonical is now the page's own preview URL (= `og:url`). With `noindex` kept, a cross-domain canonical sent search engines two contradicting signals. See "Oso Site QA pass" below. |
+| ~~The 39 dead internal links~~ | **No longer true as of 2026-10-23.** Each was repointed to the real page that exists in this tree, or unlinked when no destination exists (no destination was invented). 0 dead local references remain. See "Oso Site QA pass" below. |
 | The EyeCarePro attribution on `/disclaimer/` | The client's own legal copy, preserved verbatim. It credits the previous web vendor with having created the graphical template — which is **not** true of this redesign. Flagged to the client in the handoff `CHANGE-LOG.md` and `DEPLOY.md` rather than silently rewritten: it is their legal text, not ours. It is the only occurrence in the build. |
 | Outbound links to `booking.adit.com` and `yourstore.wewillship.com` | The practice's real booking and contact-lens services. Navigation is not blocked; `no-referrer` covers the leak. |
-| ~~`site.css`, `tokens.css`, `motion.css` byte-identical to the handoff build~~ | **No longer true as of 2026-09-22.** `motion.css` is still untouched, but `site.css` and `tokens.css` now carry the refinement pass and the notice modal — see the two sections below. The banner's styles remain in their own `preview-banner.css`. |
+| ~~`site.css`, `tokens.css`, `motion.css` byte-identical to the handoff build~~ | **No longer true as of 2026-09-22.** `site.css` and `tokens.css` now carry the refinement pass and the notice modal — see the two sections below. **As of 2026-10-23** `motion.css` is folded verbatim onto the end of `site.css` and `fonts.css` verbatim onto the top of `tokens.css` (cascade order kept), so both files are gone. The banner's styles remain in their own `preview-banner.css`. |
 
 ## Not published here
 
@@ -359,6 +359,9 @@ So the shipped copy of the same drawing is used instead. The highest resolution
 that exists anywhere is 410 × 226 — the client's own CDN original, which is the
 *boxed* version with a black frame burnt in; `urban-optics-logo-unboxed.png` is
 already derived from it.
+
+(2026-10-23: the shipped file is now `urban-optics-logo-unboxed.webp`, the same
+373 × 183 pixels with alpha, converted in the Oso Site QA pass; the `.png` is gone.)
 
 Nothing was invented or redrawn. No new asset was added.
 
