@@ -55,12 +55,18 @@ Every change is counted in `PROVENANCE.json`. Summary:
 
 1. `noindex, nofollow, noarchive, nosnippet` on all 211 pages, and `robots.txt`
    disallows everything. A public duplicate must not compete with the client's site.
-2. `<title>` and `og:title` prefixed **UNOFFICIAL PREVIEW —**, `og:url` repointed at
-   this preview, `og:description` replaced with the disclosure, `og:image` removed.
-   `noindex` does **not** stop link-unfurl crawlers, so without this a pasted link
-   rendered a card indistinguishable from the official practice.
+   Note: on a GitHub Pages **project** site crawlers only read the origin's
+   `sgencms.github.io/robots.txt` (which does not exist), never `/urbanoptics/robots.txt`,
+   so the meta `noindex` on every page is the control that actually applies.
+2. `og:url` repointed at this preview, `og:description` replaced with the disclosure,
+   and `og:image` is a **disclosure card** (`assets/img/og-preview.png`: "Unofficial
+   redesign preview — not affiliated with Urban Optics"). `noindex` does **not** stop
+   link-unfurl crawlers, so without this a pasted link rendered a card
+   indistinguishable from the official practice.
 3. **JSON-LD business-identity blocks removed** (they asserted `Optometric` with the
-   real address, telephone and opening hours).
+   real address, telephone and opening hours). Each page now carries only a
+   `WebPage` + `BreadcrumbList` block built from its own title, description and
+   breadcrumb — no organization, address, phone or hours.
 4. **Both patient forms made inert** — `action=""`, `onsubmit="return false"`,
    `data-preview="inert"`. The registration form collects PHI (name, date of birth,
    last four of SSN, medical history, insurance identifiers); on a public URL it must
@@ -70,18 +76,21 @@ Every change is counted in `PROVENANCE.json`. Summary:
 6. A **rendered disclosure banner** on every page.
 7. `sitemap.xml` and `llms.txt` removed — both advertise the client's real URLs and
    invite crawlers.
-8. `<link rel="canonical">` **kept** pointing at the client's real page. That is
-   correct for a duplicate, and deliberately different from `og:url`.
+8. `<link rel="canonical">` points at **this preview's own URL** (same as `og:url`).
+   It used to point at the client's real page, but combined with `noindex` that sent
+   search engines two contradicting signals ("drop me" vs "consolidate onto that
+   URL"); with `noindex` kept, a self-canonical is the consistent pair.
 
 ## Known limits
 
 - **The two patient forms do not submit.** Deliberate — see 4 above. On the real
   handoff build they ship complete but unwired, for the client to point at a
   HIPAA-eligible endpoint.
-- **39 internal links are dead.** All 39 are the source's own link rot, inherited
-  faithfully: 3 point at URLs the live site itself 404s, 36 at pages that never
-  existed on it (`/author`, `/category`, and links broken on the live site too).
-  None was introduced by the rebuild — classified in the handoff audit.
+- **Internal links: 0 dead.** The source's inherited link rot (links the live site
+  itself 404s, breadcrumbs to `/author`, `/category`, `/tag`, `/team`, `/location`
+  hubs that never existed, "watch a video" links to videos that exist nowhere) was
+  repointed to the real page or unlinked in the 2026-10-23 Site QA pass. Verified by
+  resolving all 43,280 local `href`/`src` references against the tree.
 - **Outbound links** to the practice's real booking provider (`booking.adit.com`) and
   contact-lens store (`yourstore.wewillship.com`) still go to those live services.
 - **Nine images could not be fetched** (404/504 at the client's WordPress CDN, one
