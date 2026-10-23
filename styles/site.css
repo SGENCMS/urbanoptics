@@ -587,6 +587,8 @@ h3.h-minor { font-size: 1em; letter-spacing: -0.015em; }
   .connect .c-chip { min-height: 44px; }
   .ed-showcase h2 a { min-height: 44px; }
   .foot-legal .foot-privacy { min-height: 44px; display: flex; align-items: center; }
+  /* the row's links are 44px boxes; the copyright line stretches to that height, so centre its text too */
+  .foot-legal p { display: flex; align-items: center; }
 }
 
 @media (max-width: 640px) {
