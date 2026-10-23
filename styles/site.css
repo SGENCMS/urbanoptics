@@ -502,6 +502,10 @@ h3.h-minor { font-size: 1em; letter-spacing: -0.015em; }
 }
 .pform input:focus-visible, .pform select:focus-visible, .pform textarea:focus-visible { border-color: var(--focus); }
 .pform button[type="submit"] { margin-top: 1.4rem; }
+/* the preview's forms are inert: the submit button is disabled, and should look it */
+.pform button[type="submit"]:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.pform .btn-solid:disabled:hover { background: var(--accent); color: var(--white); }
+.pform .btn-ghost:disabled:hover { border-color: var(--line); color: var(--ink); }
 
 /* ── footer ───────────────────────────────────────────────────────────── */
 .site-foot { background: var(--deep); color: var(--on-deep-mute); padding: var(--band) 0 2rem; }

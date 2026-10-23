@@ -115,7 +115,7 @@ th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)
 .ans .me{color:var(--accent)}
 .ans .src{font-size:11.5px;color:var(--mute);overflow-wrap:anywhere}
 blockquote{margin:18px 0 0;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;color:var(--ink)}
-blockquote p{margin:0;font-size:16px;font-style:italic}
+blockquote p{margin:0;font-size:16px;font-style:normal}
 blockquote footer{font-size:12.5px;color:var(--mute);margin-top:8px}
 /* website */
 .speed{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:24px}
@@ -152,6 +152,8 @@ blockquote footer{font-size:12.5px;color:var(--mute);margin-top:8px}
 .sources td:first-child{font-weight:700;color:var(--ink)}
 @media (min-width:601px){.sources td:first-child{white-space:nowrap}}
 footer.foot{padding-block:28px 40px;border-top:1px solid var(--line);font-size:12.5px;color:var(--mute)}
+/* touch: 44px targets on coarse pointers and narrow screens; in-text links grow by padding so text does not reflow */
+@media (pointer:coarse),(max-width:834px){.onelink .brand,.onelink nav a,.kw header a{min-height:44px;display:inline-flex;align-items:center}.mapfig figcaption a,.nis p a,td a{padding:15px 6px;margin:0 -6px}}
 </style><meta property="og:url" content="https://sgencms.github.io/urbanoptics/seo-stats/">
 <meta property="og:title" content="Urban Optics SEO Stats">
 <meta property="og:description" content="Unofficial redesign preview. Not operated by, affiliated with, or endorsed by Urban Optics. The real site is https://www.urbanopticsok.com/">

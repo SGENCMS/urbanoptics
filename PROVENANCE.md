@@ -50,7 +50,7 @@ on the patient intake form mandatory), and 206 pages carried multiple `<h1>`s.
 | 3 | ~~`<title>` prefixed `UNOFFICIAL PREVIEW — `~~ — **withdrawn 2026-09-22** at the operator's request. Titles now read as the build produced them. See *Notice modal and tab titles* below for what still carries the disclosure. | 211 | Tab title only |
 | 4 | ~~`og:title` prefixed~~ — **withdrawn 2026-09-22** with #3, so `<title>`, `og:title` and `twitter:title` agree again. Still in force: `og:url` repointed at this preview; `og:description` replaced with the disclosure; `og:image` / `twitter:image` removed | 210 | No |
 | 5 | `schema.org` JSON-LD removed — it asserted `Optometric` / `MedicalWebPage` with the real address, telephone and opening hours | 210 | No |
-| 6 | Every `<form>` marked `data-preview="inert"`; the two patient forms given `action=""` and `onsubmit="return false"` | 425 forms | No |
+| 6 | Every `<form>` marked `data-preview="inert"`; the two patient forms given `action=""` and ~~`onsubmit="return false"`~~ **(2026-10-23: replaced by a `disabled` default submit button — blocks click and Enter without JavaScript — plus a `site.js` listener; measured, the inline guard let the form POST with JavaScript off)** | 425 forms | No |
 | 7 | Rendered disclosure banner inserted as the first child of `<body>`, with its own stylesheet | 211 | **Yes** |
 | 8 | `robots.txt` replaced with `Disallow: /` | — | No |
 | 9 | `sitemap.xml` and `llms.txt` deleted — both advertise the client's real URLs | — | No |
@@ -541,6 +541,7 @@ Firefox + WebKit), served locally with GitHub Pages semantics at
 | 3 | 95 | 79 | 2 / 12 |
 | 4 | 95 | 79 | 2 / 12 |
 | 5 | 95 | 79 | 2 / 12 |
+| QA round 2 (scan 8) | 95 | 80 | 2 / 11 |
 
 Round 5 coverage: 59 of 59 check families ran, 97 rules evaluated, 0 not evaluated.
 Quality is the engine's headline (legacy) figure; on its stricter evaluated-only basis
@@ -557,7 +558,7 @@ round 5 is 93.
   and 63 meta descriptions rewritten to be unique and within length, from each page's
   own content; `WebPage` + `BreadcrumbList` JSON-LD (no business identity);
   double-escaped entities (`&amp;amp;`, `&amp;#39;`) fixed.
-- **Copy:** readability splits on ~25 pages with meaning kept; 6 typos; heading levels
+- **Copy:** readability splits on ~25 pages with meaning kept; 11 typo fixes (dependant/independant, five doubled words, phoroptor, eye sight); heading levels
   (`h4` under `h2` → `h3.h-minor`, same look); jump-link targets given their ids; two
   paragraphs on Designer Frames and one sentence on Our Featured Brands restored
   verbatim from the client's own live pages (Featured Brands also names its four logo
@@ -589,8 +590,31 @@ round 5 is 93.
 | SEO-025 analytics | By design: no trackers. |
 | SEO-013 og:image | The card's absolute URL resolves once this tree is deployed. |
 | LINK-002 Yelp 403 | Yelp's bot wall refuses every automated client; the listing is real. |
-| BP-007 inline `onsubmit` | Kept on purpose: it is the guard that keeps the PHI form inert. |
+| ~~BP-007 inline `onsubmit`~~ | **Cleared in QA round 2 (2026-10-23):** the inert forms now use a disabled default submit button, which also holds with JavaScript off. |
 | SEO-038 Original Transitions Lenses | Its prose is mostly the section rail; the 2023 original has no more copy to restore. |
 
 Scored with the engine's own `score.js` and those rules scoped out, the
 repo-controllable checks score 100.
+
+### QA round 2 — 2026-10-23 (SEO and security out of scope by owner request)
+
+The engine renders only the first 25 crawled pages, so its own checks were run on every page:
+`renderPass` (console, network, fonts, CLS/LCP, sweeps, axe-core) on all 212 pages at 1920 /
+1180 iPad / 414 iPhone / 360 Android, the advisory pass (FUNC-008/009, best practices, copy review)
+on all 213 files, and Firefox + WebKit on 14 pages. The office-hours notice opens as a modal on a
+fresh session and makes the page inert, so axe was re-run with the notice suppressed: **0 WCAG 2.1
+A/AA violations on every client page**.
+
+- **Forms:** inline `onsubmit` replaced by a disabled default submit button (see deviation 6);
+  Best Practices 90 → 100.
+- **CLS:** a font-swap reflow of 0.15–0.17 on Treating Diabetic Retinopathy (outside the 25-page
+  sample) fixed by preloading Lato 400/700 and Fraunces (latin) on 211 pages: under 0.1, 3 of 3 runs.
+- **Copy:** three doubled words the engine's word list misses; payment and header-template link text.
+- **Search index:** 7 `data-t` entries refreshed to their pages' current h1 + lede (the rule was
+  verified on 208 of 209 original entries; the home entry is kept as built).
+- **Standalone decks:** `seo-stats/` 44px touch targets (in-text links grow by padding, no reflow)
+  and no faux italic; `demo/` two texts raised to AA.
+- **Reported, not changed:** `payment/` is linked from no main page; `pay.balancecollect.com`
+  returned 403 to every client tried from the build machine (unverified for real visitors);
+  headless WebKit/Firefox render variable Fraunces and the header glass differently from
+  Chromium (check on a real Safari before acting).

@@ -67,8 +67,12 @@ Every change is counted in `PROVENANCE.json`. Summary:
    real address, telephone and opening hours). Each page now carries only a
    `WebPage` + `BreadcrumbList` block built from its own title, description and
    breadcrumb — no organization, address, phone or hours.
-4. **Both patient forms made inert** — `action=""`, `onsubmit="return false"`,
-   `data-preview="inert"`. The registration form collects PHI (name, date of birth,
+4. **Both patient forms made inert** — `action=""`, `data-preview="inert"`, and the
+   default submit button is `disabled`, which blocks both clicking it and Enter-key
+   submission **without JavaScript** (`site.js` adds a `preventDefault` listener as a
+   second layer). The earlier `onsubmit="return false"` guard was removed on
+   2026-10-23: inline handlers do not run with scripting disabled, and measured, the
+   original contact form POSTed when JavaScript was off. The registration form collects PHI (name, date of birth,
    last four of SSN, medical history, insurance identifiers); on a public URL it must
    be impossible for a visitor to believe they submitted it.
 5. `<meta name="referrer" content="no-referrer">` so outbound clicks do not reveal

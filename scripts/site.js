@@ -4,6 +4,13 @@
   var root = document.documentElement;
   root.classList.remove('no-js');
 
+  // inert preview forms — second layer only. The first layer needs no script: every
+  // form.pform's default submit button is `disabled`, which blocks both clicking it and
+  // implicit (Enter-key) submission. This catches anything else, e.g. form.requestSubmit().
+  Array.prototype.forEach.call(document.querySelectorAll('form.pform[data-preview="inert"]'), function (f) {
+    f.addEventListener('submit', function (ev) { ev.preventDefault(); });
+  });
+
   // mobile menu
   var burger = document.querySelector('.burger');
   var mnav = document.getElementById('m-nav');
