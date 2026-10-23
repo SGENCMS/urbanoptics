@@ -526,3 +526,71 @@ the images are referenced nowhere else in the tree.
   to **612px** tall.
 - All 210 pages re-swept: 0 broken images, 0 console errors, 0 responses ≥ 400.
   Modal suite 52/52 and 12/12 on each of Chromium, Firefox and WebKit, unchanged.
+
+## Oso Site QA pass — 2026-10-23
+
+Scanned with the Oso Site QA engine (Site Audit: full crawl of all 191 linked pages,
+render pass over 25 pages × 13 device viewports, axe-core 4.14 WCAG 2.1 A/AA,
+Firefox + WebKit), served locally with GitHub Pages semantics at
+`http://127.0.0.1:5517/urbanoptics/`. Fixed, rescanned and committed each round.
+
+| Round | Quality | Checks passing | Fail / warn |
+| --- | --- | --- | --- |
+| 1 (before) | 79 | 45 | 4 / 34 |
+| 2 | 94 | 78 | 2 / 13 |
+| 3 | 95 | 79 | 2 / 12 |
+| 4 | 95 | 79 | 2 / 12 |
+| 5 | 95 | 79 | 2 / 12 |
+
+Round 5 coverage: 59 of 59 check families ran, 97 rules evaluated, 0 not evaluated.
+Quality is the engine's headline (legacy) figure; on its stricter evaluated-only basis
+round 5 is 93.
+
+### What changed
+
+- **Links:** every dead local reference repointed to the real page or unlinked
+  (0 of 43,280 local `href`/`src` dead); 39 call-to-action links to the defunct
+  `ecp.eyeglassguide.com` removed with the attribution sentences kept; remaining
+  `http://` outbound links upgraded to `https://`.
+- **Head:** canonical = the page's own preview URL; `og:image` = disclosure card
+  (`assets/img/og-preview.png`); `og:description`/`twitter:card` everywhere; 37 titles
+  and 63 meta descriptions rewritten to be unique and within length, from each page's
+  own content; `WebPage` + `BreadcrumbList` JSON-LD (no business identity);
+  double-escaped entities (`&amp;amp;`, `&amp;#39;`) fixed.
+- **Copy:** readability splits on ~25 pages with meaning kept; 6 typos; heading levels
+  (`h4` under `h2` → `h3.h-minor`, same look); jump-link targets given their ids; two
+  paragraphs on Designer Frames and one sentence on Our Featured Brands restored
+  verbatim from the client's own live pages (Featured Brands also names its four logo
+  brands in text, from their alt text).
+- **Assets:** 102 images → WebP (−5.1 MB, pixel dimensions unchanged); `fonts.css`
+  and `motion.css` folded into `tokens.css` and `site.css` (5 → 3 render-blocking
+  stylesheets); real Lato 400/700 italic faces vendored; stylesheet and `site.js`
+  links versioned `?v=20261023`.
+- **Accessibility / touch:** 44px targets also on `(pointer: coarse)` (touch iPads in
+  landscape get the desktop layout); mega-menu capped to the viewport and scrollable
+  there; breadcrumb separators kept inline; AA contrast for muted grey
+  (`--ink-mute` #6b6b6b) and red text (`--accent-text` #cf1a1a, brand fills unchanged);
+  honeypot fields hidden from keyboard and assistive tech; anchor/skip targets clear the
+  sticky header via `scroll-margin-top` (not `scroll-padding`, which made keyboard
+  focus in the header scroll the page).
+- **Forms:** the registration form's three 250-option country `<select>`s are text
+  inputs with `autocomplete="country-name"`, same `name`/`id` (DOM 1922 → 1172).
+- **Footer:** "No cookies or trackers" — true: the site sets no cookies and loads no
+  third-party script (`site.js` uses `sessionStorage` only).
+
+### Still reported, and why
+
+| Rule | Why it stays |
+| --- | --- |
+| SEO-007 noindex | Owner decision: a public duplicate of a real clinic's site must stay out of search. |
+| SEC-007 http origin | Local server only; the Pages preview is HTTPS. |
+| SEC-011..015 security headers | GitHub Pages cannot send custom response headers. |
+| SEO-022 / SEO-029 sitemap, robots | Read from the origin root (`sgencms.github.io/`), not this repo. |
+| SEO-025 analytics | By design: no trackers. |
+| SEO-013 og:image | The card's absolute URL resolves once this tree is deployed. |
+| LINK-002 Yelp 403 | Yelp's bot wall refuses every automated client; the listing is real. |
+| BP-007 inline `onsubmit` | Kept on purpose: it is the guard that keeps the PHI form inert. |
+| SEO-038 Original Transitions Lenses | Its prose is mostly the section rail; the 2023 original has no more copy to restore. |
+
+Scored with the engine's own `score.js` and those rules scoped out, the
+repo-controllable checks score 100.

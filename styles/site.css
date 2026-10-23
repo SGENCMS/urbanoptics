@@ -3,7 +3,11 @@
    NOTE: no colour literal appears in this file by design — see tokens.css. */
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; } /* in-page #anchors land below the sticky header, not under it */
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+/* in-page #anchors and the skip link land below the sticky header, not under it. On the targets,
+   not as html scroll-padding: that put every header control inside the padding zone, so tabbing
+   into the header scrolled the page up. */
+main, main [id] { scroll-margin-top: 5.5rem; }
 body {
   margin: 0;
   background: var(--paper);

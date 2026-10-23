@@ -16,5 +16,34 @@
     "formNoticesAdded": 4,
     "sitemap.xmlRemoved": true,
     "llms.txtRemoved": true
+  },
+  "siteQaPass_2026_10_23": {
+    "engine": "Oso Site QA 4.1.0 (axe-core 4.14, Firefox, WebKit)",
+    "rounds": {
+      "r1": {
+        "quality": 79,
+        "checksPassing": 45,
+        "fail": 4,
+        "warn": 34
+      },
+      "r5": {
+        "quality": 95,
+        "checksPassing": 79,
+        "fail": 2,
+        "warn": 12
+      }
+    },
+    "canonicalSelf": 210,
+    "ogImageCard": 212,
+    "jsonLdWebPage": 212,
+    "titlesRewritten": 37,
+    "imagesToWebp": 102,
+    "stylesheetsMerged": [
+      "fonts.css",
+      "motion.css"
+    ],
+    "deadLocalRefsAfter": 0,
+    "deadEyeglassGuideCtasRemoved": 39,
+    "countrySelectsToInputs": 3
   }
 }
